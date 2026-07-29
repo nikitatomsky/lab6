@@ -8,6 +8,13 @@
 
 **Input**: User description: "Support for Overdue Todo Items - As a todo application user, I want to easily identify and distinguish overdue tasks in my todo list, so that I can prioritize my work and quickly see which tasks are past their due date. Users need a clear, visual way to identify which todos have not been completed by their due date. This helps users quickly spot overdue items without having to manually check dates against today's date."
 
+## Clarifications
+
+### Session 2026-07-29
+
+- Q: Does the overdue indicator need to update live while the page stays open (e.g., automatically flip to "overdue" at midnight without any reload), or is it enough to recompute it whenever the list is rendered/reloaded? → A: Recompute overdue status only when the list is rendered/loaded/refreshed (no background timer).
+- Q: What form should the overdue indicator take — a text label, an icon, or both together? → A: Text label only (e.g., "Overdue" text/badge next to the due date).
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Spot overdue todos at a glance (Priority: P1)
@@ -45,15 +52,15 @@ As a user, I want a todo I've already completed to never show as overdue, even i
 
 ### User Story 3 - Overdue status stays current over time (Priority: P3)
 
-As a user who keeps the app open across days, I want a todo's overdue status to reflect the current date automatically, so I don't need to reload the page for a todo to correctly become marked overdue once its due date passes.
+As a user who keeps the app open across days, I want a todo's overdue status to be correctly recalculated the next time the todo list is rendered, reloaded, or refreshed, so that once a due date passes, the todo shows as overdue without me having to manually check dates myself.
 
-**Why this priority**: A refinement over the base indicator; valuable for accuracy but the app remains useful even if this only updates on each page load/reload.
+**Why this priority**: A refinement over the base indicator; valuable for accuracy but the app remains useful even if this only updates on each page load/reload rather than continuously in the background.
 
-**Independent Test**: Can be fully tested by creating a todo due "today," then verifying that after the calendar day changes and the list is viewed again (including via a simple reload), the todo is now shown as overdue.
+**Independent Test**: Can be fully tested by creating a todo due "today," then verifying that after the calendar day changes and the list is viewed again (including via a simple reload), the todo is now shown as overdue. No background timer or live update while the page sits idle is required.
 
 **Acceptance Scenarios**:
 
-1. **Given** a todo due today that is not yet overdue, **When** the current date advances past the due date and the user views the list again, **Then** the todo now displays the overdue indicator.
+1. **Given** a todo due today that is not yet overdue, **When** the current date advances past the due date and the user reloads or re-renders the list, **Then** the todo now displays the overdue indicator.
 
 ---
 
@@ -74,8 +81,8 @@ As a user who keeps the app open across days, I want a todo's overdue status to 
 - **FR-003**: System MUST NOT display an overdue indicator for any todo without a due date.
 - **FR-004**: System MUST NOT treat a todo due on the current date as overdue; a todo becomes overdue only once its due date has fully passed.
 - **FR-005**: System MUST update a todo's overdue indicator immediately when its completion status changes, without requiring a page reload.
-- **FR-006**: System MUST re-evaluate each todo's overdue status whenever the todo list is viewed or refreshed, based on the current date at that time.
-- **FR-007**: The overdue indicator MUST be distinguishable without relying on color alone (e.g., accompanied by a text label or icon), so the status is perceivable by users with color vision deficiencies.
+- **FR-006**: System MUST re-evaluate each todo's overdue status whenever the todo list is viewed, rendered, or refreshed, based on the current date at that time. Continuous background polling or a live timer to update status while the page is idle is NOT required.
+- **FR-007**: The overdue indicator MUST be a visible text label (e.g., "Overdue") displayed alongside the todo's due date, not relying on color alone, so the status is perceivable by users with color vision deficiencies.
 - **FR-008**: System MUST NOT alter the existing todo list ordering or introduce any filtering/grouping as part of this feature.
 
 ### Key Entities
