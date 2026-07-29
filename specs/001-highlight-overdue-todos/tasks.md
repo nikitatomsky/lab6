@@ -30,7 +30,7 @@ feature is frontend-only per [plan.md](./plan.md) — no backend files are touch
 
 **Purpose**: Confirm the baseline before making changes (no new dependencies or scaffolding are required for this feature)
 
-- [ ] T001 Run `npm run test:frontend` from the repo root to confirm the existing frontend test suite passes cleanly before starting, establishing a clean baseline
+- [X] T001 Run `npm run test:frontend` from the repo root to confirm the existing frontend test suite passes cleanly before starting, establishing a clean baseline
 
 ---
 
@@ -40,8 +40,8 @@ feature is frontend-only per [plan.md](./plan.md) — no backend files are touch
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [ ] T002 [P] Write unit tests for the `isOverdue` helper in `packages/frontend/src/utils/__tests__/todoStatus.test.js` covering all cases from data-model.md: past-due + incomplete → `true`; due today → `false`; future due date → `false`; no due date → `false`; past-due + completed → `false`
-- [ ] T003 Implement `isOverdue(todo, referenceDate = new Date())` in `packages/frontend/src/utils/todoStatus.js` as a pure function that compares calendar dates only (no time-of-day component), per research.md's date-comparison decision, so the tests in T002 pass
+- [X] T002 [P] Write unit tests for the `isOverdue` helper in `packages/frontend/src/utils/__tests__/todoStatus.test.js` covering all cases from data-model.md: past-due + incomplete → `true`; due today → `false`; future due date → `false`; no due date → `false`; past-due + completed → `false`
+- [X] T003 Implement `isOverdue(todo, referenceDate = new Date())` in `packages/frontend/src/utils/todoStatus.js` as a pure function that compares calendar dates only (no time-of-day component), per research.md's date-comparison decision, so the tests in T002 pass
 
 **Checkpoint**: `isOverdue` utility is fully implemented and unit-tested — ready for UI integration in any user story
 
@@ -55,11 +55,11 @@ feature is frontend-only per [plan.md](./plan.md) — no backend files are touch
 
 ### Tests for User Story 1
 
-- [ ] T004 [P] [US1] Add test cases to `packages/frontend/src/components/__tests__/TodoCard.test.js` asserting the "Overdue" text label renders for an incomplete todo with a past due date, and does NOT render for todos due today, due in the future, or with no due date (spec.md Acceptance Scenarios 1-4)
+- [X] T004 [P] [US1] Add test cases to `packages/frontend/src/components/__tests__/TodoCard.test.js` asserting the "Overdue" text label renders for an incomplete todo with a past due date, and does NOT render for todos due today, due in the future, or with no due date (spec.md Acceptance Scenarios 1-4)
 
 ### Implementation for User Story 1
 
-- [ ] T005 [US1] In `packages/frontend/src/components/TodoCard.js`, import `isOverdue` from `../utils/todoStatus` and conditionally render a visible "Overdue" text label next to the due date whenever `isOverdue(todo)` is `true` (FR-001, FR-003, FR-004, FR-007)
+- [X] T005 [US1] In `packages/frontend/src/components/TodoCard.js`, import `isOverdue` from `../utils/todoStatus` and conditionally render a visible "Overdue" text label next to the due date whenever `isOverdue(todo)` is `true` (FR-001, FR-003, FR-004, FR-007)
 
 **Checkpoint**: User Story 1 is fully functional and independently testable — viewing the list correctly distinguishes overdue todos
 
@@ -73,11 +73,11 @@ feature is frontend-only per [plan.md](./plan.md) — no backend files are touch
 
 ### Tests for User Story 2
 
-- [ ] T006 [P] [US2] Add test cases to `packages/frontend/src/components/__tests__/TodoCard.test.js` asserting the "Overdue" label is absent for a completed todo with a past due date (even after re-render), and reappears when the same todo is toggled back to incomplete (spec.md Acceptance Scenarios 1-3)
+- [X] T006 [P] [US2] Add test cases to `packages/frontend/src/components/__tests__/TodoCard.test.js` asserting the "Overdue" label is absent for a completed todo with a past due date (even after re-render), and reappears when the same todo is toggled back to incomplete (spec.md Acceptance Scenarios 1-3)
 
 ### Implementation for User Story 2
 
-- [ ] T007 [US2] Verify in `packages/frontend/src/components/TodoCard.js` that the existing `onToggle` re-render flow immediately reflects the updated `isOverdue(todo)` result with no extra state or effects, satisfying FR-002 and FR-005; adjust the T005 integration only if the label does not update immediately
+- [X] T007 [US2] Verify in `packages/frontend/src/components/TodoCard.js` that the existing `onToggle` re-render flow immediately reflects the updated `isOverdue(todo)` result with no extra state or effects, satisfying FR-002 and FR-005; adjust the T005 integration only if the label does not update immediately
 
 **Checkpoint**: User Stories 1 AND 2 both work independently — completed todos are never mislabeled as overdue
 
@@ -91,12 +91,12 @@ feature is frontend-only per [plan.md](./plan.md) — no backend files are touch
 
 ### Tests for User Story 3
 
-- [ ] T008 [P] [US3] Add a unit test in `packages/frontend/src/utils/__tests__/todoStatus.test.js` calling `isOverdue(todo, referenceDate)` with a `referenceDate` one calendar day after `todo.dueDate` (expect `true`) and with `referenceDate` equal to `todo.dueDate` (expect `false`), demonstrating the result is recomputed fresh from the reference date rather than cached (FR-006)
-- [ ] T009 [P] [US3] Add a test in `packages/frontend/src/components/__tests__/TodoCard.test.js` that re-renders the same todo after advancing the system date with `jest.useFakeTimers().setSystemTime(...)`, confirming the "Overdue" label appears once the due date has passed (spec.md Acceptance Scenario 1)
+- [X] T008 [P] [US3] Add a unit test in `packages/frontend/src/utils/__tests__/todoStatus.test.js` calling `isOverdue(todo, referenceDate)` with a `referenceDate` one calendar day after `todo.dueDate` (expect `true`) and with `referenceDate` equal to `todo.dueDate` (expect `false`), demonstrating the result is recomputed fresh from the reference date rather than cached (FR-006)
+- [X] T009 [P] [US3] Add a test in `packages/frontend/src/components/__tests__/TodoCard.test.js` that re-renders the same todo after advancing the system date with `jest.useFakeTimers().setSystemTime(...)`, confirming the "Overdue" label appears once the due date has passed (spec.md Acceptance Scenario 1)
 
 ### Implementation for User Story 3
 
-- [ ] T010 [US3] Confirm in `packages/frontend/src/components/TodoCard.js` that `isOverdue(todo)` is called fresh on every render (no memoization or cached result across renders), so the tests in T008-T009 pass without further production code changes
+- [X] T010 [US3] Confirm in `packages/frontend/src/components/TodoCard.js` that `isOverdue(todo)` is called fresh on every render (no memoization or cached result across renders), so the tests in T008-T009 pass without further production code changes
 
 **Checkpoint**: All three user stories are independently functional — overdue status is accurate on first render, after toggling, and after the date advances
 
@@ -106,9 +106,9 @@ feature is frontend-only per [plan.md](./plan.md) — no backend files are touch
 
 **Purpose**: Final validation and cleanup affecting the whole feature
 
-- [ ] T011 [P] Run `npm test` from the repo root to confirm all existing backend and frontend tests, plus the new tests from T002/T004/T006/T008/T009, pass with no regressions
-- [ ] T012 Execute the manual validation steps in [specs/001-highlight-overdue-todos/quickstart.md](./quickstart.md) end-to-end against the running app (create past/today/future/no-due-date todos, toggle completion, edit due dates, reload the page)
-- [ ] T013 [P] Add a short JSDoc comment above `isOverdue` in `packages/frontend/src/utils/todoStatus.js` documenting its parameters and return value, consistent with existing conventions in `packages/frontend/src`
+- [X] T011 [P] Run `npm test` from the repo root to confirm all existing backend and frontend tests, plus the new tests from T002/T004/T006/T008/T009, pass with no regressions
+- [X] T012 Execute the manual validation steps in [specs/001-highlight-overdue-todos/quickstart.md](./quickstart.md) end-to-end against the running app (create past/today/future/no-due-date todos, toggle completion, edit due dates, reload the page)
+- [X] T013 [P] Add a short JSDoc comment above `isOverdue` in `packages/frontend/src/utils/todoStatus.js` documenting its parameters and return value, consistent with existing conventions in `packages/frontend/src`
 
 ---
 
